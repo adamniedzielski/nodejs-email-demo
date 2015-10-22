@@ -1,19 +1,32 @@
 var co = require("co");
 var nodemailer = require('nodemailer');
 var Q = require("q");
+var EmailTemplate = require('email-templates').EmailTemplate;
+var path = require('path');
 
 function *send() {
   var transporter = nodemailer.createTransport({
     port: 1025
   });
 
+  var content = yield renderContent();
+
   var rawSend = Q.nbind(transporter.sendMail, transporter);
   yield rawSend({
       from: 'test1@example.com',
       to: 'test2@example.com',
       subject: 'Test',
-      text: 'Test123!'
+      html: content.html
   });
+}
+
+function *renderContent() {
+  var templateDir = path.join(__dirname, 'invitation');
+  var invitation = new EmailTemplate(templateDir);
+  var context = { userName: "Adam" };
+
+  var render = Q.nbind(invitation.render, invitation);
+  return yield render(context);
 }
 
 co(function* () {

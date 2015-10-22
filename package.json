@@ -6,6 +6,9 @@
   "license": "ISC",
   "dependencies": {
     "co": "^4.6.0",
+    "email-templates": "^2.0.1",
+    "jade": "^1.11.0",
+    "node-sass": "^3.3.3",
     "nodemailer": "^1.8.0",
     "q": "^1.4.1"
   }
