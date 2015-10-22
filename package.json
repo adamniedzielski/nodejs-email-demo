@@ -8,6 +8,8 @@
     "co": "^4.6.0",
     "email-templates": "^2.0.1",
     "jade": "^1.11.0",
+    "koa": "^1.1.0",
+    "koa-router": "^5.2.3",
     "mongodb": "^2.0.46",
     "node-sass": "^3.3.3",
     "node-uuid": "^1.4.3",
