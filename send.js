@@ -4,7 +4,7 @@ var Q = require("q");
 var EmailTemplate = require('email-templates').EmailTemplate;
 var path = require('path');
 var uuid = require('node-uuid');
-var MongoClient = require('mongodb').MongoClient;
+var db = require('./db');
 
 function *send() {
   var transporter = nodemailer.createTransport({
@@ -34,18 +34,7 @@ function *renderContent() {
 }
 
 function *saveContent(token, content) {
-  var connect = Q.nbind(MongoClient.connect, MongoClient);
-  var db = yield connect("mongodb://localhost:27017/nodejs-email-demo");
-
-  var collection = db.collection('emails');
-
-  var insert = Q.nbind(collection.insertOne, collection);
-  yield insert({
-    token: token,
-    content: content.html
-  });
-
-  db.close();
+  yield db.save(token, content.html);
 }
 
 co(function* () {
