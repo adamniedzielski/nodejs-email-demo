@@ -13,7 +13,7 @@ function *send() {
 
   var token = uuid.v4();
 
-  var content = yield renderContent();
+  var content = yield renderContent(token);
 
   var rawSend = Q.nbind(transporter.sendMail, transporter);
   yield [rawSend({
@@ -24,10 +24,13 @@ function *send() {
   }), saveContent(token, content)];
 }
 
-function *renderContent() {
+function *renderContent(token) {
   var templateDir = path.join(__dirname, 'invitation');
   var invitation = new EmailTemplate(templateDir);
-  var context = { userName: "Adam" };
+  var context = {
+    userName: "Adam",
+    viewInBrowserUrl: "http://localhost:3000/emails/" + token
+  };
 
   var render = Q.nbind(invitation.render, invitation);
   return yield render(context);
